@@ -151,6 +151,8 @@ async function loadStandings() {
 
     const standingsData = await apiRequest(
         `standings?league=${WORLD_CUP_LEAGUE_ID}&season=${SEASON}`
+    console.log("Standings Response:");
+console.log(standingsData);
     );
 
     const standingsContainer =
