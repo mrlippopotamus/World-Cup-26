@@ -1,4 +1,4 @@
-const API_KEY = "REPLACE_WITH_NEW_API_KEY";
+const API_KEY = "b3c19ad6e0ffa7b42033a2e2e1207c1a";
 
 const WORLD_CUP_LEAGUE_ID = 1;
 const SEASON = 2026;
