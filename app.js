@@ -3,9 +3,7 @@ const API_KEY = "b3c19ad6e0ffa7b42033a2e2e1207c1a";
 const WORLD_CUP_LEAGUE_ID = 1;
 const SEASON = 2026;
 
-const TEST_MODE = true;
-
-const TEST_DATE = new Date("2026-06-17T12:00:00Z");
+const DEMO_MODE = true;
 
 let displayedGroups = [];
 let standingsIndex = 0;
@@ -34,9 +32,7 @@ async function apiRequest(endpoint) {
 
 function getCountdown(dateString) {
 
-    const now = TEST_MODE
-    ? TEST_DATE
-    : new Date();
+    const now = new Date();
     const kickoff = new Date(dateString);
 
     const diff = kickoff - now;
@@ -51,9 +47,48 @@ function getCountdown(dateString) {
 
 async function loadFixtures() {
 
-    const fixturesData = await apiRequest(
+    let fixturesData;
+
+if (DEMO_MODE) {
+
+    fixturesData = {
+        response: [
+            {
+                fixture: {
+                    date: "2026-06-17T18:00:00Z",
+                    status: {
+                        short: "NS",
+                        long: "Not Started"
+                    }
+                },
+                league: {
+                    round: "Group A"
+                },
+                teams: {
+                    home: {
+                        name: "Mexico",
+                        logo: "https://media.api-sports.io/football/teams/16.png"
+                    },
+                    away: {
+                        name: "Poland",
+                        logo: "https://media.api-sports.io/football/teams/1098.png"
+                    }
+                },
+                goals: {
+                    home: null,
+                    away: null
+                }
+            }
+        ]
+    };
+
+} else {
+
+    fixturesData = await apiRequest(
         `fixtures?league=${WORLD_CUP_LEAGUE_ID}&season=${SEASON}`
     );
+
+}
 
     const matchesContainer = document.getElementById("matches");
     matchesContainer.innerHTML = "";
@@ -151,9 +186,58 @@ if (isLive) {
 
 async function loadStandings() {
 
-    const standingsData = await apiRequest(
+   let standingsData;
+
+if (DEMO_MODE) {
+
+    standingsData = {
+        response: [
+            {
+                league: {
+                    standings: [
+                        [
+                            {
+                                group: "Group A",
+                                team: { name: "Mexico" },
+                                all: { played: 1 },
+                                goalsDiff: 2,
+                                points: 3
+                            },
+                            {
+                                group: "Group A",
+                                team: { name: "Poland" },
+                                all: { played: 1 },
+                                goalsDiff: 0,
+                                points: 1
+                            },
+                            {
+                                group: "Group A",
+                                team: { name: "Japan" },
+                                all: { played: 1 },
+                                goalsDiff: -1,
+                                points: 1
+                            },
+                            {
+                                group: "Group A",
+                                team: { name: "Senegal" },
+                                all: { played: 1 },
+                                goalsDiff: -1,
+                                points: 0
+                            }
+                        ]
+                    ]
+                }
+            }
+        ]
+    };
+
+} else {
+
+    standingsData = await apiRequest(
         `standings?league=${WORLD_CUP_LEAGUE_ID}&season=${SEASON}`
     );
+
+}
 
     console.log("Standings Data:", standingsData);
 
@@ -171,8 +255,19 @@ async function loadStandings() {
         return;
     }
 
-    const groups =
-        standingsData.response[0].league.standings;
+    if (!standingsData.response || standingsData.response.length === 0) {
+
+    document.getElementById("standings").innerHTML = `
+        <div class="standings-card">
+            <h3>No standings available</h3>
+        </div>
+    `;
+
+    return;
+}
+
+const groups =
+    standingsData.response[0].league.standings;
 
     const relevantGroups = groups.filter(group => {
 
