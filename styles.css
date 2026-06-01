@@ -26,10 +26,22 @@ h1{
     color:#9ca3af;
 }
 
-#matches{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(500px,1fr));
+.dashboard{
+    display:flex;
     gap:20px;
+    height:calc(100vh - 140px);
+}
+
+.matches-panel{
+    flex:7;
+    overflow-y:auto;
+}
+
+.standings-panel{
+    flex:3;
+    background:#111827;
+    border-radius:16px;
+    padding:20px;
 }
 
 .match-card{
