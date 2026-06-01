@@ -309,7 +309,14 @@ const groups =
                 <tbody>
                     ${group.map(team => `
                         <tr>
-                            <td>${team.team.name}</td>
+                            <td>
+    <img
+        src="${team.team.logo}"
+        width="30"
+        style="vertical-align:middle;margin-right:8px;"
+    >
+    ${team.team.name}
+</td>
                             <td>${team.all.played}</td>
                             <td>${team.goalsDiff}</td>
                             <td>${team.points}</td>
