@@ -64,6 +64,12 @@ async function loadFixtures() {
         return date >= now && date <= next24;
     });
 
+    fixtures.sort(
+    (a, b) =>
+        new Date(a.fixture.date) -
+        new Date(b.fixture.date)
+);
+
     fixtures.forEach(match => {
 
         const group = match.league.round || "Group Stage";
@@ -73,6 +79,12 @@ async function loadFixtures() {
         }
 
         const status = match.fixture.status.short;
+
+        const kickoff = new Date(match.fixture.date)
+    .toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
 
         const score =
             status === "NS"
@@ -107,9 +119,17 @@ if (isLive) {
 
             <div class="group">${group}</div>
 
+            <div class="kickoff">
+    Kick Off: ${kickoff}
+</div>
+
             <div class="status">
-                ${match.fixture.status.long}
-            </div>
+    ${
+        match.fixture.status.short === "NS"
+            ? "Not Started"
+            : `${match.fixture.status.long} ${match.fixture.status.elapsed || ""}'`
+    }
+</div>
 
             <div class="countdown">
                 ${getCountdown(match.fixture.date)}
