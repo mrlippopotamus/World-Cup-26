@@ -70,6 +70,8 @@ async function loadFixtures() {
         return date >= now && date <= next24;
     });
 
+    console.log(fixturesData);
+    
     fixtures.sort(
     (a, b) =>
         new Date(a.fixture.date) -
