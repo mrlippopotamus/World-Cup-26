@@ -58,6 +58,12 @@ h1{
     color:#d1d5db;
 }
 
+.kickoff{
+    margin-top:8px;
+    color:#93c5fd;
+    font-size:1.1rem;
+}
+
 .status{
     margin-top:10px;
     font-size:1.4rem;
