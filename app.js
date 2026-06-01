@@ -1,0 +1,191 @@
+const API_KEY = "REPLACE_WITH_NEW_API_KEY";
+
+const WORLD_CUP_LEAGUE_ID = 1;
+const SEASON = 2026;
+
+let displayedGroups = [];
+let standingsIndex = 0;
+
+document.getElementById("currentDate").textContent =
+    new Date().toLocaleDateString("en-GB", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+
+async function apiRequest(endpoint) {
+
+    const response = await fetch(
+        `https://v3.football.api-sports.io/${endpoint}`,
+        {
+            headers: {
+                "x-apisports-key": API_KEY
+            }
+        }
+    );
+
+    return response.json();
+}
+
+function getCountdown(dateString) {
+
+    const now = new Date();
+    const kickoff = new Date(dateString);
+
+    const diff = kickoff - now;
+
+    if (diff <= 0) return "";
+
+    const hours = Math.floor(diff / 3600000);
+    const mins = Math.floor((diff % 3600000) / 60000);
+
+    return `Starts in ${hours}h ${mins}m`;
+}
+
+async function loadFixtures() {
+
+    const fixturesData = await apiRequest(
+        `fixtures?league=${WORLD_CUP_LEAGUE_ID}&season=${SEASON}`
+    );
+
+    const matchesContainer = document.getElementById("matches");
+    matchesContainer.innerHTML = "";
+
+    displayedGroups = [];
+
+    const now = new Date();
+    const next24 = new Date(now.getTime() + (24 * 60 * 60 * 1000));
+
+    const fixtures = fixturesData.response.filter(match => {
+
+        const date = new Date(match.fixture.date);
+
+        return date >= now && date <= next24;
+    });
+
+    fixtures.forEach(match => {
+
+        const group = match.league.round || "Group Stage";
+
+        if (!displayedGroups.includes(group)) {
+            displayedGroups.push(group);
+        }
+
+        const status = match.fixture.status.short;
+
+        const score =
+            status === "NS"
+                ? "-"
+                : `${match.goals.home} - ${match.goals.away}`;
+
+        const card = document.createElement("div");
+        card.className = "match-card";
+
+        card.innerHTML = `
+            <div class="teams">
+                <div>
+                    <img src="${match.teams.home.logo}" width="50">
+                    ${match.teams.home.name}
+                </div>
+
+                <div class="score">${score}</div>
+
+                <div>
+                    ${match.teams.away.name}
+                    <img src="${match.teams.away.logo}" width="50">
+                </div>
+            </div>
+
+            <div class="group">${group}</div>
+
+            <div class="status">
+                ${match.fixture.status.long}
+            </div>
+
+            <div class="countdown">
+                ${getCountdown(match.fixture.date)}
+            </div>
+        `;
+
+        matchesContainer.appendChild(card);
+    });
+}
+
+async function loadStandings() {
+
+    const standingsData = await apiRequest(
+        `standings?league=${WORLD_CUP_LEAGUE_ID}&season=${SEASON}`
+    );
+
+    const standingsContainer =
+        document.getElementById("standings");
+
+    const groups =
+        standingsData.response[0].league.standings;
+
+    const relevantGroups = groups.filter(group => {
+
+        const groupName = group[0].group;
+
+        return displayedGroups.some(g =>
+            groupName.includes(g.replace("Group ", ""))
+        );
+    });
+
+    if (!relevantGroups.length) return;
+
+    if (standingsIndex >= relevantGroups.length) {
+        standingsIndex = 0;
+    }
+
+    const group = relevantGroups[standingsIndex];
+
+    standingsContainer.innerHTML = `
+        <div class="standings-card">
+            <h3>${group[0].group}</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>P</th>
+                        <th>GD</th>
+                        <th>Pts</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    ${group.map(team => `
+                        <tr>
+                            <td>${team.team.name}</td>
+                            <td>${team.all.played}</td>
+                            <td>${team.goalsDiff}</td>
+                            <td>${team.points}</td>
+                        </tr>
+                    `).join("")}
+                </tbody>
+            </table>
+        </div>
+    `;
+
+    standingsIndex++;
+}
+
+async function refreshDashboard() {
+
+    try {
+
+        await loadFixtures();
+        await loadStandings();
+
+    } catch (err) {
+
+        console.error(err);
+    }
+}
+
+refreshDashboard();
+
+setInterval(refreshDashboard, 60000);
+setInterval(loadStandings, 20000);
