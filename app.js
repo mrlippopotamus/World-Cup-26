@@ -80,7 +80,15 @@ async function loadFixtures() {
                 : `${match.goals.home} - ${match.goals.away}`;
 
         const card = document.createElement("div");
-        card.className = "match-card";
+card.className = "match-card";
+
+const isLive = ["1H", "2H", "HT", "ET", "BT", "P"].includes(
+    match.fixture.status.short
+);
+
+if (isLive) {
+    card.style.border = "3px solid #22c55e";
+}
 
         card.innerHTML = `
             <div class="teams">
@@ -107,6 +115,7 @@ async function loadFixtures() {
                 ${getCountdown(match.fixture.date)}
             </div>
         `;
+        
 
         matchesContainer.appendChild(card);
     });
