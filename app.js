@@ -193,7 +193,7 @@ if (DEMO_MODE) {
                         [
                             {
                                 group: "Group A",
-                                team: { name: "Mexico" 
+                                team: { name: "Mexico",
                                         logo: "https://flagcdn.com/w40/mx.png"
                                       },
                                 all: { played: 1 },
@@ -202,8 +202,8 @@ if (DEMO_MODE) {
                             },
                             {
                                 group: "Group A",
-                                team: { name: "Poland" 
-                                      logo: "https://flagcdn.com/w40/pl.png"
+                                team: { name: "Poland",
+                                        logo: "https://flagcdn.com/w40/pl.png"
                                       },
                                 all: { played: 1 },
                                 goalsDiff: 0,
@@ -211,7 +211,7 @@ if (DEMO_MODE) {
                             },
                             {
                                 group: "Group A",
-                                team: { name: "Japan" 
+                                team: { name: "Japan",
                                       logo: "https://flagcdn.com/w40/jp.png"
                                       },
                                 all: { played: 1 },
@@ -220,7 +220,7 @@ if (DEMO_MODE) {
                             },
                             {
                                 group: "Group A",
-                                team: { name: "Senegal" 
+                                team: { name: "Senegal", 
                                       logo: "https://flagcdn.com/w40/sn.png"
                                       },
                                 all: { played: 1 },
