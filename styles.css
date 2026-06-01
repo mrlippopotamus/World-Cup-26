@@ -1,3 +1,9 @@
+html,
+body{
+    height:100%;
+    overflow:hidden;
+}
+
 *{
     margin:0;
     padding:0;
@@ -43,17 +49,14 @@ h1{
     gap:20px;
 }
 
-.standings-panel{
-    flex:3;
-    background:#111827;
-    border-radius:16px;
-    padding:20px;
+.standings-card{
+    padding:10px;
 }
 
 .match-card{
     background:#111827;
     border-radius:16px;
-    padding:20px;
+    padding:30px;
     border:1px solid #1f2937;
 }
 
@@ -61,7 +64,7 @@ h1{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    font-size:2rem;
+    font-size:2.3rem;
     font-weight:bold;
 }
 
