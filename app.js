@@ -3,6 +3,10 @@ const API_KEY = "b3c19ad6e0ffa7b42033a2e2e1207c1a";
 const WORLD_CUP_LEAGUE_ID = 1;
 const SEASON = 2026;
 
+const TEST_MODE = true;
+
+const TEST_DATE = new Date("2026-06-17T12:00:00Z");
+
 let displayedGroups = [];
 let standingsIndex = 0;
 
@@ -30,7 +34,9 @@ async function apiRequest(endpoint) {
 
 function getCountdown(dateString) {
 
-    const now = new Date();
+    const now = TEST_MODE
+    ? TEST_DATE
+    : new Date();
     const kickoff = new Date(dateString);
 
     const diff = kickoff - now;
