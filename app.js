@@ -153,12 +153,23 @@ async function loadStandings() {
 
     const standingsData = await apiRequest(
         `standings?league=${WORLD_CUP_LEAGUE_ID}&season=${SEASON}`
-    console.log("Standings Response:");
-console.log(standingsData);
     );
 
-    const standingsContainer =
-        document.getElementById("standings");
+    console.log("Standings Data:", standingsData);
+
+    if (
+        !standingsData.response ||
+        standingsData.response.length === 0
+    ) {
+
+        document.getElementById("standings").innerHTML = `
+            <div class="standings-card">
+                <h3>No standings available yet</h3>
+            </div>
+        `;
+
+        return;
+    }
 
     const groups =
         standingsData.response[0].league.standings;
