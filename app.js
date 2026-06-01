@@ -67,11 +67,11 @@ if (DEMO_MODE) {
                 teams: {
                     home: {
                         name: "Mexico",
-                        logo: "https://media.api-sports.io/football/teams/16.png"
+                        logo: "https://flagcdn.com/w80/mx.png"
                     },
                     away: {
                         name: "Poland",
-                        logo: "https://media.api-sports.io/football/teams/1098.png"
+                        logo: "https://flagcdn.com/w80/pl.png"
                     }
                 },
                 goals: {
