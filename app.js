@@ -98,11 +98,7 @@ if (DEMO_MODE) {
     const now = new Date();
     const next24 = new Date(now.getTime() + (24 * 60 * 60 * 1000));
 
-    const fixtures = fixturesData.response.filter(match => {
-
-        const date = new Date(match.fixture.date);
-
-        return date >= now && date <= next24;
+const fixtures = fixturesData.response;
     });
 
     console.log(fixturesData);
@@ -268,6 +264,9 @@ if (DEMO_MODE) {
 
 const groups =
     standingsData.response[0].league.standings;
+
+    const standingsContainer =
+    document.getElementById("standings");
 
     const relevantGroups = groups.filter(group => {
 
