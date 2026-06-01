@@ -99,7 +99,7 @@ if (DEMO_MODE) {
     const next24 = new Date(now.getTime() + (24 * 60 * 60 * 1000));
 
 const fixtures = fixturesData.response;
-    });
+    );
 
     console.log(fixturesData);
     
