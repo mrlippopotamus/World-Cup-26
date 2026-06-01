@@ -37,6 +37,12 @@ h1{
     overflow-y:auto;
 }
 
+#matches{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
 .standings-panel{
     flex:3;
     background:#111827;
